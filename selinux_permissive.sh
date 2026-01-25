@@ -1,6 +1,5 @@
-#!/bin/bash
-clear
-echo "[!] WARNING: Security risk"
+#!/system/bin/sh
 su -c "setenforce 0"
-echo "[✓] SELinux permissive"
-read; bash main.sh
+echo "[✓] SELINUX PERMISSIVE"
+read -p "Enter..."
+exec ../main.sh
