@@ -1,12 +1,11 @@
-#!/bin/bash
-clear
-echo "[*] SYSTEM INFO"
-su -c "
-echo 'Android Version:' \$(getprop ro.build.version.release)
-echo 'SDK:' \$(getprop ro.build.version.sdk)
-echo 'Device:' \$(getprop ro.product.model)
-echo 'Kernel:' \$(uname -r)
-mount | head
-"
-read -p "Enter untuk kembali"
-bash ../main.sh
+#!/data/data/com.termux/files/usr/bin/bash
+echo "[*] System Info"
+getprop ro.product.model
+getprop ro.build.version.release
+getprop ro.product.cpu.abi
+uptime
+free -h
+echo
+echo "Tekan Enter untuk kembali..."
+read
+exec ../main.sh
