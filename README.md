@@ -30,7 +30,30 @@ Tool ini membutuhkan akses ROOT. Gunakan dengan bijak. Risiko ditanggung penggun
 - Logcat Monitor
 - Kernel Info
 - Backup Aplikasi
-
+  
+# Cara jalanin modules biar berfungsi fitur nya
+salin semua kode ini paste ke termux
+```
+pwd
+ls
+rm -rf modules
+mkdir modules
+ls modules
+mv \
+root_check.sh system_info.sh mount_rw.sh hosts_block.sh \
+cpu_tweak.sh gpu_tweak.sh ram_cleaner.sh thermal_off.sh \
+app_freezer.sh app_unfreeze.sh battery_saver.sh io_tweak.sh \
+network_boost.sh selinux_status.sh selinux_permissive.sh \
+hide_root_basic.sh service_manager.sh reboot_menu.sh \
+storage_boost.sh pkg_manager.sh logcat_monitor.sh \
+modules/
+ls modules
+chmod +x main.sh login.sh
+chmod +x modules/*.sh
+ls -l modules/root_check.sh
+./modules/root_check.sh
+./main.sh
+```
 ## 📦 Instalasi (Termux)
 
 ```bash
