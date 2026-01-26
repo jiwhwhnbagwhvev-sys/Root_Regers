@@ -28,32 +28,36 @@ echo -e "${WHT}
 ${R}"
 }
 
-clear; logo; menu
-read -p "Pilih: " p
-case $p in
-1) modules/root_check.sh ;;
-2) modules/system_info.sh ;;
-3) modules/mount_rw.sh ;;
-4) modules/hosts_block.sh ;;
-5) modules/cpu_tweak.sh ;;
-6) modules/gpu_tweak.sh ;;
-7) modules/ram_cleaner.sh ;;
-8) modules/thermal_off.sh ;;
-9) modules/app_freezer.sh ;;
-10) modules/app_unfreeze.sh ;;
-11) modules/battery_saver.sh ;;
-12) modules/io_tweak.sh ;;
-13) modules/network_boost.sh ;;
-14) modules/selinux_status.sh ;;
-15) modules/selinux_permissive.sh ;;
-16) modules/hide_root_basic.sh ;;
-17) modules/service_manager.sh ;;
-18) modules/reboot_menu.sh ;;
-19) modules/storage_boost.sh ;;
-20) modules/pkg_manager.sh ;;
-21) modules/logcat_monitor.sh ;;
-22) modules/kernel_tweak.sh ;;
-23) modules/backup_apps.sh ;;
-0) exit ;;
-*) exec "$0" ;;
-esac
+while true; do
+    clear
+    logo
+    menu
+    read -p "Pilih: " p
+    case $p in
+        1) ./modules/root_check.sh ;;
+        2) ./modules/system_info.sh ;;
+        3) ./modules/mount_rw.sh ;;
+        4) ./modules/hosts_block.sh ;;
+        5) ./modules/cpu_tweak.sh ;;
+        6) ./modules/gpu_tweak.sh ;;
+        7) ./modules/ram_cleaner.sh ;;
+        8) ./modules/thermal_off.sh ;;
+        9) ./modules/app_freezer.sh ;;
+        10) ./modules/app_unfreeze.sh ;;
+        11) ./modules/battery_saver.sh ;;
+        12) ./modules/io_tweak.sh ;;
+        13) ./modules/network_boost.sh ;;
+        14) ./modules/selinux_status.sh ;;
+        15) ./modules/selinux_permissive.sh ;;
+        16) ./modules/hide_root_basic.sh ;;
+        17) ./modules/service_manager.sh ;;
+        18) ./modules/reboot_menu.sh ;;
+        19) ./modules/storage_boost.sh ;;
+        20) ./modules/pkg_manager.sh ;;
+        21) ./modules/logcat_monitor.sh ;;
+        22) ./modules/kernel_tweak.sh ;;
+        23) ./modules/backup_apps.sh ;;
+        0) echo "[✓] Keluar..."; exit ;;
+        *) echo "[!] Pilihan salah"; sleep 1 ;;
+    esac
+done
