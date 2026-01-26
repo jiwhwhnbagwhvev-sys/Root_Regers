@@ -1,52 +1,78 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ===== WARNA =====
-R="\033[31m"
-W="\033[97m"
-B="\033[1m"
-N="\033[0m"
+RED="\033[31m"
+GRN="\033[32m"
+YLW="\033[33m"
+BLU="\033[34m"
+MAG="\033[35m"
+CYN="\033[36m"
+WHT="\033[97m"
+BOLD="\033[1m"
+RST="\033[0m"
 
-# ===== LOGIN DATA =====
 USER_OK="Rio"
 PASS_OK="Root_Rage 2026"
 
 clear
 
-# ===== LOGO =====
-echo -e "${R}${B}"
-cat <<'LOGO'
-██████╗  ██████╗  ██████╗ ████████╗
-██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝
-██████╔╝██║   ██║██║   ██║   ██║
-██╔══██╗██║   ██║██║   ██║   ██║
-██║  ██║╚██████╔╝╚██████╔╝   ██║
-╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝
-        ROOT  RAGERS
-LOGO
-echo -e "${N}"
+# ===== LOGO WARNA-WARNI =====
+logo() {
+clear
+cat <<EOF
+${RED}██████╗ ${GRN}██████╗ ${YLW}██████╗ ${BLU}████████╗
+${MAG}██╔══██╗${CYN}██╔═══██╗${RED}██╔═══██╗${GRN}╚══██╔══╝
+${YLW}██████╔╝${BLU}██║   ██║${MAG}██║   ██║${CYN}   ██║
+${RED}██╔══██╗${GRN}██║   ██║${YLW}██║   ██║${BLU}   ██║
+${MAG}██║  ██║${CYN}╚██████╔╝${RED}╚██████╔╝${GRN}   ██║
+${YLW}╚═╝  ╚═╝${BLU} ╚═════╝ ${MAG} ╚═════╝ ${CYN}   ╚═╝
+${WHT}${BOLD}        ROOT  RAGERS  2026${RST}
+EOF
+}
 
-# ===== TABEL INFO =====
-echo -e "${W}+--------------------------------------+${N}"
-echo -e "${W}|${R}        AUTHENTICATION PANEL        ${W}|${N}"
-echo -e "${W}+---------------+----------------------+${N}"
-echo -e "${W}|${R} Tool Name     ${W}| Root Ragers          ${W}|${N}"
-echo -e "${W}|${R} Version       ${W}| 2026                 ${W}|${N}"
-echo -e "${W}|${R} Mode          ${W}| ROOT REQUIRED        ${W}|${N}"
-echo -e "${W}+---------------+----------------------+${N}"
+logo
+sleep 0.5
+
+# ===== LOADING ANIMASI =====
+echo
+echo -ne "${CYN}Initializing System "
+spin='|/-\'
+for i in {1..20}; do
+  printf "\b${spin:i%4:1}"
+  sleep 0.1
+done
+echo -e " ${GRN}[OK]${RST}"
+sleep 0.5
+clear
+logo
+
+# ===== PANEL LOGIN =====
+echo
+echo -e "${WHT}+--------------------------------------+${RST}"
+echo -e "${WHT}|${RED}        AUTHENTICATION PANEL        ${WHT}|${RST}"
+echo -e "${WHT}+---------------+----------------------+${RST}"
+echo -e "${WHT}|${RED} User          ${WHT}| Rio                  ${WHT}|${RST}"
+echo -e "${WHT}|${RED} Access        ${WHT}| ROOT MODE            ${WHT}|${RST}"
+echo -e "${WHT}+---------------+----------------------+${RST}"
 echo
 
-# ===== INPUT LOGIN =====
-read -p "$(echo -e ${R}Username${W}': ')" user
-read -s -p "$(echo -e ${R}Password${W}': ')" pass
+# ===== INPUT =====
+read -p "$(echo -e ${MAG}${BOLD}Username${RST}': ')" user
+read -s -p "$(echo -e ${MAG}${BOLD}Password${RST}': ')" pass
 echo
 echo
 
 # ===== VALIDASI =====
 if [[ "$user" == "$USER_OK" && "$pass" == "$PASS_OK" ]]; then
-    echo -e "${W}[${R}✓${W}] LOGIN SUCCESS — WELCOME ${R}${USER_OK}${N}"
-    sleep 1
+    echo -e "${GRN}${BOLD}[✓] LOGIN SUCCESS${RST}"
+    echo -ne "${CYN}Access Granted "
+    for i in {1..10}; do
+      echo -ne "${GRN}■${RST}"
+      sleep 0.1
+    done
+    sleep 0.5
 else
-    echo -e "${R}[✗] LOGIN FAILED${N}"
+    echo -e "${RED}${BOLD}[✗] LOGIN FAILED${RST}"
     sleep 2
     exit 1
 fi
