@@ -5,7 +5,5 @@ getprop ro.build.version.release
 getprop ro.product.cpu.abi
 uptime
 free -h
-echo
-echo "Tekan Enter untuk kembali..."
-read
-exec ../main.sh
+read -p "Enter untuk kembali atau q untuk keluar: " c
+[[ "$c" =~ ^[qQ]$ ]] && exit || return
