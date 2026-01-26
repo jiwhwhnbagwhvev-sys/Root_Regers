@@ -1,6 +1,12 @@
-#!/system/bin/sh
-su -c "stop thermal-engine" 2>/dev/null
-su -c "stop vendor.thermal-engine" 2>/dev/null
-echo "[✓] THERMAL OFF"
-read -p "Enter..."
-exec ../main.sh
+
+#!/data/data/com.termux/files/usr/bin/bash
+. ./modules/_common.sh
+
+MODUL="Disable Thermal"
+echo "[*] Menjalankan $MODUL"
+loading
+
+need_root
+tsu -c 'for t in /sys/class/thermal/thermal_zone*/mode; do echo disabled > $t 2>/dev/null; done'
+
+back
