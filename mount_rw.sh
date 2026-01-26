@@ -1,12 +1,12 @@
-#!/bin/bash
-clear
-echo "[*] Mounting /system RW..."
+#!/data/data/com.termux/files/usr/bin/bash
+. ./modules/_common.sh
 
-su -c "
-mount -o rw,remount /system 2>/dev/null ||
-mount -o rw,remount / 2>/dev/null
-"
+MODUL="Mount /system RW"
+echo "[*] Menjalankan $MODUL"
+loading
 
-echo "[✓] Done (kalau device support)"
-read -p "Enter untuk kembali"
-bash main.sh
+need_root
+tsu -c "mount -o rw,remount /system || mount -o rw,remount /"
+mount | grep system
+
+back
