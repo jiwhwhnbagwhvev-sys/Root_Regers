@@ -1,87 +1,162 @@
-#!/data/data/com.termux/files/usr/bin/bash
-. ./modules/_common.sh
+#!/system/bin/sh
+# ==========================================
+# ROOT CHECK MODULE — ROOT_RAGERS
+# ==========================================
 
-header "ROOT ACCESS TEST MODE"
+MODULE_NAME="ROOT CHECK"
+LOG="/data/local/tmp/root_ragers.log"
+TEST_MODE=1
 
-echo "[*] Memulai uji coba root tingkat sistem"
-sleep 0.5
-line
+# ---------- COLOR ----------
+R="\e[0m"
+G="\e[1;32m"
+Y="\e[1;33m"
+RED="\e[1;31m"
+C="\e[1;36m"
+B="\e[1m"
 
-# ===============================
-# TEST 1: Binary Root
-# ===============================
-echo "[1] Cek binary root (tsu / su)"
-if command -v tsu >/dev/null 2>&1; then
-  ROOTCMD="tsu"
-  echo "[✓] tsu ditemukan"
-elif command -v su >/dev/null 2>&1; then
-  ROOTCMD="su"
-  echo "[✓] su ditemukan"
+# ---------- UTIL ----------
+pause() { read -rp "Tekan ENTER untuk kembali..."; }
+log() { echo "[$(date '+%F %T')] $MODULE_NAME : $1" >> "$LOG"; }
+
+header() {
+clear
+echo -e "${C}${B}"
+echo "╔══════════════════════════════════════╗"
+echo "║          ROOT CHECK MODULE           ║"
+echo "╚══════════════════════════════════════╝"
+echo -e "${R}"
+}
+
+progress() {
+echo -ne "${Y}Memeriksa sistem"
+for i in $(seq 1 15); do
+  echo -ne "."
+  sleep 0.15
+done
+echo -e "${R}"
+}
+
+# ---------- ROOT CHECK ----------
+check_su_binary() {
+echo -e "${Y}[*] Mengecek binary su...${R}"
+if command -v su >/dev/null 2>&1; then
+  echo -e "${G}[✓] su ditemukan${R}"
+  log "su binary OK"
+  return 0
 else
-  echo "[✗] Tidak ada akses root"
-  pause
-  exit
+  echo -e "${RED}[✗] su tidak ditemukan${R}"
+  log "su binary NOT FOUND"
+  return 1
 fi
+}
 
-# ===============================
-# TEST 2: UID ROOT
-# ===============================
-echo
-echo "[2] Uji UID root (id)"
-if $ROOTCMD -c "id | grep -q 'uid=0'"; then
-  $ROOTCMD -c id
-  echo "[✓] UID = 0 (ROOT)"
+check_uid() {
+echo -e "${Y}[*] Mengecek UID root...${R}"
+UID_TEST=$(su -c "id -u" 2>/dev/null)
+
+if [ "$UID_TEST" = "0" ]; then
+  echo -e "${G}[✓] UID = 0 (ROOT)${R}"
+  log "UID ROOT OK"
+  return 0
 else
-  echo "[✗] Bukan UID root"
+  echo -e "${RED}[✗] UID bukan root${R}"
+  log "UID ROOT FAILED"
+  return 1
 fi
+}
 
-# ===============================
-# TEST 3: WRITE /data
-# ===============================
-echo
-echo "[3] Uji tulis direktori /data"
-TESTFILE="/data/local/tmp/root_ragers_test.txt"
+check_system_mount() {
+echo -e "${Y}[*] Mengecek mount /system...${R}"
+SYS_MOUNT=$(mount | grep " /system ")
 
-if $ROOTCMD -c "echo ROOT_OK > $TESTFILE" 2>/dev/null; then
-  echo "[✓] Berhasil menulis ke /data"
-  $ROOTCMD -c "cat $TESTFILE"
-  $ROOTCMD -c "rm -f $TESTFILE"
+if echo "$SYS_MOUNT" | grep -q "rw"; then
+  echo -e "${G}[✓] /system RW${R}"
+  log "/system RW"
 else
-  echo "[✗] Gagal menulis ke /data"
+  echo -e "${Y}[!] /system RO${R}"
+  log "/system RO"
 fi
+}
 
-# ===============================
-# TEST 4: READ /proc
-# ===============================
-echo
-echo "[4] Uji baca /proc"
-if $ROOTCMD -c "cat /proc/version" >/dev/null 2>&1; then
-  $ROOTCMD -c "cat /proc/version | head -n 1"
-  echo "[✓] Akses /proc OK"
+check_write_access() {
+echo -e "${Y}[*] Tes tulis dummy...${R}"
+TEST_FILE="/data/local/tmp/.root_test"
+
+su -c "echo test > $TEST_FILE" 2>/dev/null
+
+if su -c "[ -f $TEST_FILE ]"; then
+  echo -e "${G}[✓] Akses tulis berhasil${R}"
+  su -c "rm -f $TEST_FILE"
+  log "WRITE ACCESS OK"
+  return 0
 else
-  echo "[✗] Tidak bisa akses /proc"
+  echo -e "${RED}[✗] Akses tulis gagal${R}"
+  log "WRITE ACCESS FAILED"
+  return 1
 fi
+}
 
-# ===============================
-# TEST 5: SYSFS ACCESS
-# ===============================
-echo
-echo "[5] Uji akses sysfs CPU"
-CPU_GOV="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+# ---------- AUTO TEST ----------
+auto_test() {
+[ "$TEST_MODE" != "1" ] && return
 
-if $ROOTCMD -c "[ -f $CPU_GOV ]"; then
-  CUR_GOV=$($ROOTCMD -c "cat $CPU_GOV")
-  echo "[✓] Governor terdeteksi: $CUR_GOV"
+echo -e "${C}${B}"
+echo "╔══════════════════════════════════════╗"
+echo "║           AUTO TEST MODE             ║"
+echo "╚══════════════════════════════════════╝"
+echo -e "${R}"
+
+TEMP_PATH="/sys/class/thermal/thermal_zone0/temp"
+
+[ ! -f "$TEMP_PATH" ] && {
+  echo -e "${Y}[!] Sensor suhu tidak tersedia${R}"
+  return
+}
+
+TEMP_BEFORE=$(cat "$TEMP_PATH")
+TEMP_BEFORE=$((TEMP_BEFORE / 1000))
+
+echo " Suhu awal : ${TEMP_BEFORE}°C"
+echo -e "${Y}[*] Stress test ringan...${R}"
+
+for i in {1..2}; do
+  yes > /dev/null &
+done
+
+sleep 4
+killall yes 2>/dev/null
+
+TEMP_AFTER=$(cat "$TEMP_PATH")
+TEMP_AFTER=$((TEMP_AFTER / 1000))
+
+echo " Suhu akhir: ${TEMP_AFTER}°C"
+
+if [ "$TEMP_AFTER" -gt "$TEMP_BEFORE" ]; then
+  echo -e "${G}[✓] AUTO TEST BERHASIL${R}"
+  log "AUTO TEST OK"
 else
-  echo "[!] Sysfs CPU tidak tersedia (kernel lock)"
+  echo -e "${Y}[!] AUTO TEST TIDAK TERDETEKSI${R}"
+  log "AUTO TEST NO CHANGE"
 fi
+}
 
-# ===============================
-# RESULT
-# ===============================
-line
-echo -e "${GRN}[✓] MODE UJI COBA ROOT SELESAI${RST}"
-echo "[*] Perangkat ini memiliki akses root aktif"
-line
+# ---------- MAIN ----------
+main() {
+header
+progress
 
+check_su_binary || { echo -e "${RED}ROOT INVALID${R}"; pause; exit 1; }
+check_uid        || { echo -e "${RED}ROOT INVALID${R}"; pause; exit 1; }
+check_system_mount
+check_write_access || { echo -e "${RED}ROOT TERBATAS${R}"; pause; exit 1; }
+
+echo -e "${G}${B}"
+echo "✔ ROOT VALID — DEVICE SIAP DIGUNAKAN"
+echo -e "${R}"
+
+auto_test
 pause
+}
+
+main
