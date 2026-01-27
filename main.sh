@@ -89,7 +89,7 @@ while true; do
         26) bash modules/auto_spam_block_guard.sh ;;
         27) bash modules/hp_security_guard.sh ;;
         28) bash modules/led_ble_control.sh ;;
-        29) bash ui/mikrotik_ui.sh ;;
+        29) bash modules/mikrotik_control.sh ;;
         0)  echo "[✓] Keluar..."; exit ;;
         *)  echo "[!] Pilihan salah"; sleep 1 ;;
     esac
