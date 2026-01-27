@@ -39,8 +39,8 @@ Tool ini membutuhkan akses ROOT. Gunakan dengan bijak. Risiko ditanggung penggun
 - Backup Aplikasi
 
 # Katasandi server kode
-• USERNAME= Rio2026
-• PASSWORD= Root_Rage 2026
+- USERNAME= Rio2026
+- PASSWORD= Root_Rage 2026
 
 # kalo kode nya eror
 jalanin perintah di bawah ini
