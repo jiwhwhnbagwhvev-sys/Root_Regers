@@ -47,7 +47,9 @@ echo -e "${WHT}
 6 GPU Boost         14 SELinux Status   22 Kernel Info
 7 RAM Cleaner       15 SELinux Perm     23 Backup Apps
 8 Disable Thermal   16 Basic Root Hide  24 Network Speed & IP Check   
-0 Exit.             25 WiFi Intruder Scanner 26 Auto Spam Block Guard
+25 WiFi Intruder Scanner 
+26 Auto Spam Block Guard
+0 Exit.          
 ${R}"
 }
 
