@@ -47,6 +47,8 @@ ip route dan harus ada imput ini
 - Logcat Monitor
 - Kernel Info
 - Backup Aplikasi
+- WiFi Intruder Scanner
+- Auto Spam Block Guard
 
 # Katasandi server kode
 - USERNAME= Rio2026
