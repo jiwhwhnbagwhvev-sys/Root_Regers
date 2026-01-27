@@ -46,7 +46,7 @@ echo -e "${WHT}
 5 CPU Performance   13 Network Boost    21 Logcat Monitor
 6 GPU Boost         14 SELinux Status   22 Kernel Info
 7 RAM Cleaner       15 SELinux Perm     23 Backup Apps
-8 Disable Thermal   16 Basic Root Hide  24 WiFi Info & Signal Strength                                     
+8 Disable Thermal   16 Basic Root Hide  24 Network Speed & IP Check                          
 0 Exit
 ${R}"
 }
@@ -81,7 +81,7 @@ while true; do
         21) bash modules/logcat_monitor.sh ;;
         22) bash modules/kernel_tweak.sh ;;
         23) bash modules/backup_apps.sh ;;
-        24) bash modules/wifi_info.sh ;;
+        24) bash modules/network_speed.sh ;;
         0)  echo "[✓] Keluar..."; exit ;;
         *)  echo "[!] Pilihan salah"; sleep 1 ;;
     esac
