@@ -100,7 +100,7 @@ while true; do
         33) bash modules/smart_monitor.sh ;;
         34) bash modules/security_watch.sh ;;
         35) bash modules/web_lab.sh ;;
-        36) bash modules/coding_dark_lab.sh ;;
+        36) bash modules/dark_coding_lab.sh ;;
         37) bash modules/game_account_security.sh ;;
         0)  echo "[✓] Keluar..."; exit ;;
         *)  echo "[!] Pilihan salah"; sleep 1 ;;
